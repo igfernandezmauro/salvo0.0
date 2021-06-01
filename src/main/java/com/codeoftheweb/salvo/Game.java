@@ -63,6 +63,7 @@ public class Game {
         dto.put("created", getCreationDate());
         dto.put("gamePlayers", getGamePlayers().stream().map(GamePlayer::getPlayerInfo).collect(toList()));
         dto.put("ships", gp.getShips().stream().map(Ship::getInfo).collect(toList()));
+        dto.put("salvoes", getGamePlayers().stream().map(GamePlayer::getSalvoesInfo).collect(toList()));
         return dto;
     }
 }
