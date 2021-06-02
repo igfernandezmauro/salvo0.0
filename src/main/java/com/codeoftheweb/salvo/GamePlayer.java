@@ -3,7 +3,7 @@ package com.codeoftheweb.salvo;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.*;
-import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toList;
 
 @Entity
 public class GamePlayer {
@@ -78,10 +78,6 @@ public class GamePlayer {
         return this.salvoes;
     }
 
-    public List<Object> getSalvoesInfo(){
-        return this.getSalvoes().stream().map(Salvo::getInfo).collect(Collectors.toList());
-    }
-
     public void addSalvo(Salvo _salvo){
         _salvo.setGamePlayer(this);
         this.salvoes.add(_salvo);
@@ -92,6 +88,10 @@ public class GamePlayer {
         dto.put("id", getId());
         dto.put("player", getPlayer().getInfo());
         return dto;
+    }
+
+    public List<Object> getSalvoesInfo(){
+        return this.getSalvoes().stream().map(Salvo::getInfo).collect(toList());
     }
 
 }
