@@ -2,10 +2,7 @@ package com.codeoftheweb.salvo;
 
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -19,7 +16,10 @@ public class Player {
     private String userName;
 
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
-    Set<GamePlayer> games;
+    private Set<GamePlayer> games;
+
+    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
+    private Set<Score> scores;
 
     public Player(){
     }
@@ -40,12 +40,30 @@ public class Player {
         this.userName = _userName;
     }
 
-    public void addGame(GamePlayer gamePlayer){
-        games.add(gamePlayer);
+    public void addGame(GamePlayer _gamePlayer){
+        games.add(_gamePlayer);
     }
 
     public List<Game> getGames(){
         return games.stream().map(GamePlayer::getGame).collect(toList());
+    }
+
+    public void addScore(Score _score){
+        scores.add(_score);
+    }
+
+    public List<Score> getScores(){
+        return new ArrayList<>(this.scores);
+    }
+
+    public Score getScore(Game game){
+        Optional<Score> gameScore = getScores().stream().filter(s -> s.getGame().equals(game)).findFirst();
+        if(gameScore.isPresent()){
+            return gameScore.get();
+        }
+        else{
+            return null;
+        }
     }
 
     public Map<String, Object> getInfo(){

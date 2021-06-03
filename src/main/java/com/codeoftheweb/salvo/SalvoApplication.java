@@ -15,7 +15,7 @@ public class SalvoApplication {
 	@Bean
 	public CommandLineRunner initData(PlayerRepository playerRepository, GameRepository gameRepository,
 									  GamePlayerRepository gamePlayerRepository, ShipRepository shipRepository,
-									  SalvoRepository salvoRepository){
+									  SalvoRepository salvoRepository, ScoreRepository scoreRepository){
 		return(args) -> {
 			//Create Players
 			Player player1 = new Player("j.bauer@ctu.gov");
@@ -103,6 +103,23 @@ public class SalvoApplication {
 			Salvo sal20 = new Salvo(2, gp10, Arrays.asList("C6","D6", "E6"));
 			Salvo sal21 = new Salvo(3, gp10, Arrays.asList("H1","H8"));
 
+			//Create Scores
+			Date finishDate = Date.from(new Date().toInstant().plusSeconds(3600));
+			Score sc1 = new Score(1.0, finishDate, game1, player1);
+			Score sc2 = new Score(0.0, finishDate, game1, player2);
+
+			finishDate = Date.from(finishDate.toInstant().plusSeconds(3600));
+			Score sc3 = new Score(0.5, finishDate, game2, player1);
+			Score sc4 = new Score(0.5, finishDate, game2, player2);
+
+			finishDate = Date.from(finishDate.toInstant().plusSeconds(3600));
+			Score sc5 = new Score(1.0, finishDate, game3, player2);
+			Score sc6 = new Score(0.0, finishDate, game3, player3);
+
+			finishDate = Date.from(finishDate.toInstant().plusSeconds(3600));
+			Score sc7 = new Score(0.5, finishDate, game4, player2);
+			Score sc8 = new Score(0.5, finishDate, game4, player1);
+
 			//Save Players
 			playerRepository.save(player1);
 			playerRepository.save(player2);
@@ -177,6 +194,16 @@ public class SalvoApplication {
 			salvoRepository.save(sal19);
 			salvoRepository.save(sal20);
 			salvoRepository.save(sal21);
+
+			//Save Scores
+			scoreRepository.save(sc1);
+			scoreRepository.save(sc2);
+			scoreRepository.save(sc3);
+			scoreRepository.save(sc4);
+			scoreRepository.save(sc5);
+			scoreRepository.save(sc6);
+			scoreRepository.save(sc7);
+			scoreRepository.save(sc8);
 		};
 	}
 

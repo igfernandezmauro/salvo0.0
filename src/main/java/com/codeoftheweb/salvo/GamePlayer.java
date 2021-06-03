@@ -23,10 +23,10 @@ public class GamePlayer {
     private Player player;
 
     @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER)
-    Set<Ship> ships = new HashSet<>();
+    private Set<Ship> ships = new HashSet<>();
 
     @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER)
-    Set<Salvo> salvoes = new HashSet<>();
+    private Set<Salvo> salvoes = new HashSet<>();
 
     public GamePlayer(){
     }
@@ -84,9 +84,24 @@ public class GamePlayer {
     }
 
     public Map<String, Object> getPlayerInfo(){
+        Score score = getPlayer().getScore(getGame());
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("id", getId());
         dto.put("player", getPlayer().getInfo());
+        return dto;
+    }
+
+    public Map<String, Object> getPlayerInfoGames(){
+        Score score = getPlayer().getScore(getGame());
+        Map<String, Object> dto = new LinkedHashMap<String, Object>();
+        dto.put("id", getId());
+        dto.put("player", getPlayer().getInfo());
+        if(score != null){
+            dto.put("score", score.getScore());
+        }
+        else{
+            dto.put("score", 0);
+        }
         return dto;
     }
 
